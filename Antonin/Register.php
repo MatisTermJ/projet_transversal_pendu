@@ -5,10 +5,10 @@ if(isset($_POST['envoie'])){
             $pseudo = htmlspecialchars($_POST['pseudo']);
             $mdp = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $email = htmlspecialchars($_POST['email']);
-            $insert = $dbh->prepare('INSERT INTO register(pseudo, password, email)VALUES(?, ?, ?)');
+            $insert = $dbh->prepare('INSERT INTO users(pseudo, password, email)VALUES(?, ?, ?)');
             $insert->execute(array($pseudo, $mdp, $email));
             
-            $recupUser = $dbh->prepare('SELECT * FROM register WHERE pseudo = ? AND password = ? AND email = ?');
+            $recupUser = $dbh->prepare('SELECT * FROM users WHERE pseudo = ? AND password = ? AND email = ?');
             $recupUser->execute(array($pseudo, $mdp, $email));
             if($recupUser->rowCount() > 0 ){
                 $_SESSION['pseudo'] = $pseudo;
@@ -16,7 +16,7 @@ if(isset($_POST['envoie'])){
                 $_SESSION['email'] = $email;
                 $_SESSION['id'] = $recupUser->fetch()['id'];        
             }
-            header('Location: homepage.php');    
+            header('Location: Choix_Jeu.php');    
                 }else{
                             echo "Vous n'avez pas tout renseigné.";
                     }   

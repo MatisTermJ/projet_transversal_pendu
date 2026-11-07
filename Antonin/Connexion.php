@@ -5,7 +5,7 @@
             $email = htmlspecialchars($_POST['email']);
            
             // 1. On cherche l'utilisateur uniquement par son email
-            $recupUser = $dbh->prepare('SELECT * FROM register WHERE email = ?');
+            $recupUser = $dbh->prepare('SELECT * FROM users WHERE email = ?');
             $recupUser->execute(array($email));
 
             $user = $recupUser->fetch();
@@ -18,7 +18,7 @@
                 $_SESSION['email'] = $email;
                 $_SESSION['id'] = $user['id'];
                 
-                header('Location: homepage.php');
+                header('Location: Choix_Jeu.php');
             }else{
                 echo "screugneugneu";
             }
@@ -33,14 +33,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>tchitcho</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body >
     <header>
     </header>
     <main>
         <button>
-            <a href="homepage.php">retourner a la home page</a>
+            <a href="index.php">retourner a la home page</a>
         </button>
         <form method="POST" align="center">
            
