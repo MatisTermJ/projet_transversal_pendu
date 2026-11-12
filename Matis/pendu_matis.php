@@ -74,7 +74,7 @@
         echo "Vos points :" . $_SESSION['counts'] . "<br/>";
         */?>
         <?php
-        // Voir pour les caractères spéciaux, pour les points, pour le message de fin...
+        // Voir pour les caractères spéciaux, pour les points, pour le message de fin, pour le début en révélant X lettres...
 
         if (!isset($_SESSION['difficulty'])){
             $_SESSION['difficulty'] = 'Medium';
