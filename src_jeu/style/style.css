@@ -8,3 +8,27 @@ body{
     padding: 1rem;
     border-radius: 1rem 1rem 1rem 1rem;
 }
+
+.letter_green{
+    background-color: #67C787;
+    border: 1px solid #0F4C22;
+    border-radius: 0.7rem 0.7rem 0.7rem 0.7rem;
+    color: #0F4C22;
+}
+
+.letter_red{
+    background-color: #D46A6A;
+    border: 1px solid #801717;
+    border-radius: 0.7rem 0.7rem 0.7rem 0.7rem;
+    color: #801717;
+}
+
+.letter_green,
+.letter_red {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.25rem 0.5rem;
+    align-items: center;
+    justify-content: center;
+    margin: 0.15rem;
+}

@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../src_jeu/style/style.css">
     <title>Jeu du Pendu</title>
 </head>
 <body>
@@ -74,11 +75,19 @@
         echo "Vos points :" . $_SESSION['counts'] . "<br/>";
         */?>
         <?php
-        // Voir pour les caractères spéciaux, pour les points, pour le message de fin, pour le début en révélant X lettres...
+        // Voir pour les caractères spéciaux, pour les points, pour le message de fin, pour le début en révélant X lettres, garder l'historique de parties en insérant chaque parties dans la base de données...
 
         if (!isset($_SESSION['difficulty'])){
             $_SESSION['difficulty'] = 'Medium';
         }
+        if ($_SESSION['difficulty'] === 'Easy'){
+            $reveal_letter = 2;
+        }elseif ($_SESSION['difficulty'] === 'Medium'){
+            $reveal_letter = 1;
+        }else{
+            $reveal_letter = null;
+        }
+        
         if (!isset($_SESSION['theme'])){
             $_SESSION['theme'] = 'Zelda';
         }
@@ -95,12 +104,26 @@
         if(!isset($_SESSION['word']) || isset($_POST['new_word'])){
             if (count($list_words) > 0) {
                 $_SESSION['word'] = $list_words[random_int(0, count($list_words) - 1)];
+                $word_decomposition = mb_str_split(mb_strtolower($_SESSION['word'], 'UTF-8'));
                 $_SESSION['letters_found'] = [];
                 $_SESSION['alphabet'] = array_fill_keys(range('a', 'z'), null);
                 $_SESSION['tries'] = [];
                 $_SESSION['tries_remaining'] = 7;
+
+                // On révèle ou non des lettres
+                
+                if ($reveal_letter !== null){
+                    $wd = $word_decomposition;
+                    for ($i = 0; $i < $reveal_letter; $i++){
+                        $l = $wd[array_rand($wd)];
+                        $wd = array_values(array_filter($wd, fn($element) => $element !== $l)); //On enlève les occurences de la lettre du tableau
+                        $_SESSION['letters_found'][] = $l;
+                        $_SESSION['alphabet'][$l] = "green";
+                    }
+                }
             }
         }
+        
         $word_decomposition = mb_str_split(mb_strtolower($_SESSION['word'], 'UTF-8'));
         $_SESSION['word_found'] = array_fill(0, count($word_decomposition), '_');
 
@@ -168,12 +191,12 @@
             echo "Vous avez perdu !";
         }
         foreach($_SESSION['alphabet'] as $letter => $couleur){
-            echo '<span style="color: ' . ($couleur ?? 'black') . ';">' . htmlspecialchars($letter, ENT_QUOTES, 'UTF-8') . ' </span>';
+            echo '<span class="letter_' . ($couleur ?? 'black') . '">' . htmlspecialchars($letter, ENT_QUOTES, 'UTF-8') . ' </span>';
         }
         echo '<h4> Essais restant : ' . $_SESSION['tries_remaining'] . '/7</h4>';
         echo '<h4> Essais : </h4>';
         foreach($_SESSION['tries'] as $letter => $couleur){
-            echo '<p style="color: ' . ($couleur ?? 'black') . ';">' . htmlspecialchars($letter, ENT_QUOTES, 'UTF-8') . ' </p>';
+            echo '<span class="letter_' . ($couleur ?? 'black') . '">' . htmlspecialchars($letter, ENT_QUOTES, 'UTF-8') . ' </span>';
         }
         ?>
             <form method="POST">
