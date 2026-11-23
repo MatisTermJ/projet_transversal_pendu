@@ -1,0 +1,62 @@
+.title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: green;
+}
+.game_choice{
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+.img{
+    display: flex;
+    align-items: center;  
+   justify-content: center;
+    width: 50px;
+}
+.img2{
+    display: flex;
+    align-items: center;  
+   justify-content: center;
+    width: 65px;
+}
+.game_button{
+   display: inline-block;      
+   align-items: center;  
+   justify-content: center;
+    background-color: red;        
+    padding: 5px 30px 5px 30px;
+    border-radius: 15%;
+    margin-right: 100px;
+}
+.game{
+    display: flex;
+    flex-direction: row;
+    align-items: center;  
+   justify-content: center;
+}
+.foter{
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+.scoreTable{
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    background-color: cyan;
+    flex-direction: column;
+    padding: 50px 50px 50px 50px;
+}
+
+
+.difficulty{
+    display: flex;
+    background-color: blue;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    color: aqua;
+
+}
