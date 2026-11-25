@@ -18,7 +18,7 @@
                 $_SESSION['email'] = $email;
                 $_SESSION['id'] = $user['id'];
                 
-                header('Location: Choix_Jeu.php');
+                header('Location: index.php');
             }else{
                 echo "screugneugneu";
             }
@@ -38,8 +38,8 @@
     <header>
     </header>
     <main>
-        <button>
-            <a href="index.php">retourner a la home page</a>
+        <button class="connect_btn">
+            <a href="index.php" >retourner a la home page</a>
         </button>
         <form method="POST" align="center">
            

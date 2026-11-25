@@ -11,9 +11,10 @@
 }
 .img{
     display: flex;
-    align-items: center;  
+    align-items: left;  
    justify-content: center;
-    width: 50px;
+    width: 30%;
+    height: 10%;
 }
 .img2{
     display: flex;
@@ -21,18 +22,19 @@
    justify-content: center;
     width: 65px;
 }
-.game_button{
-   display: inline-block;      
-   align-items: center;  
-   justify-content: center;
-    background-color: red;        
-    padding: 5px 30px 5px 30px;
-    border-radius: 15%;
-    margin-right: 100px;
+.game_button a{
+   display: flex;      
+   flex-direction: row;
+    background-color: rgb(65, 54, 225);        
+}
+.game_choice.text{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 .game{
     display: flex;
-    flex-direction: row;
     align-items: center;  
    justify-content: center;
 }
@@ -53,10 +55,38 @@
 
 .difficulty{
     display: flex;
-    background-color: blue;
+    background-color: rgba(60, 92, 235, 0.91);
     align-items: center;
     justify-content: center;
     padding: 50px;
-    color: aqua;
+    border-radius: 50px;
+}
+.theme_bouton{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+   
+}
+.bouton_theme{
+    margin-right: 100px;
+}
 
+body{
+    background-color: rgb(4, 17, 32);
+}
+.connect_btn{
+    background: linear-gradient(45deg, red, orange, cyan);
+    border: none;
+    padding: 6px;
+    border-radius: 50px;
+    transition: all 0.5s;
+}
+.connect_btn:hover{
+    border-radius: 10px;
+    border: 2px solid white;
+
+}
+.imgg{
+    border-radius: 50px;
 }

@@ -16,7 +16,7 @@ if(isset($_POST['envoie'])){
                 $_SESSION['email'] = $email;
                 $_SESSION['id'] = $recupUser->fetch()['id'];        
             }
-            header('Location: Choix_Jeu.php');    
+            header('Location: index.php');    
                 }else{
                             echo "Vous n'avez pas tout renseigné.";
                     }   
