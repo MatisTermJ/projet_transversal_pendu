@@ -21,22 +21,28 @@
         <button><a href="Choix_Jeu.php">Retour</a></button>
             <p>Le pendu</p>
         <?php
+        $_SESSION['pseudo'] = 'Antonin';
         // Voir pour les caractères spéciaux, pour les points, pour le message de fin, pour le début en révélant X lettres, garder l'historique de parties en insérant chaque parties dans la base de données...
         // Faire l'export vers la base de données : user_id, word_id, difficulty, attemps, victory (0 ou 1), points, created_at (fin de partie)
 
-        //user_id
-        /*try{
-            $query = $dbh->query("SELECT id FROM users WHERE pseudo = ?");
-            $query->execute([$_SESSION['pseudo']]);
-            $_SESSION['userId'] = $query->fetchColumn();
-        }catch (PDOException $e) {
-        die("Erreur lors de la récupération des données : " . $e->getMessage());
-        }*/
-        
+        //user_id à déplacer à terme dans la page connexion.php
+        if(!isset($_SESSION['userId'])){    
+            $users = interrogation_bdd($dbh, 'id', 'users', 'pseudo', $_SESSION['pseudo']);
+            if ($users !== false) {
+                $_SESSION['userId'] = $users['id'];
+            }}
+
         init($dbh);
         
         if(!isset($_SESSION['word']) || isset($_POST['new_word'])){
             new_game($_SESSION['list_words'], $_SESSION['reveal_letter']);
+        }
+        if(!isset($_SESSION['wordId']) or !isset($_SESSION['wordPoint'])){
+            $word_param = interrogation_bdd($dbh, 'id, word_point', 'words', 'word', $_SESSION['word']);
+            if ($word_param !== false){
+                $_SESSION['wordId'] = $word_param['id'];
+                $_SESSION['wordPoint'] = $word_param['word_point'];
+            }
         }
 
         $word_decomposition = mb_str_split(mb_strtolower($_SESSION['word'], 'UTF-8'));
@@ -73,7 +79,8 @@
                 $_SESSION['letters_found'] = array_values(array_unique($word_decomposition));
                 echo "Bravo, tu as trouvé le mot !<br>";
                 $_SESSION['tries'][$guess] = "green";
-                // Rajouter point ici
+                $_SESSION['victory'] = 1;
+                $_SESSION['wordPoint'] += 5; // Valeur arbitraire à changer
             } else {
                 echo "Ce n'est pas le bon mot.<br>";
                 if (!isset($_SESSION['tries'][$guess])){
@@ -100,7 +107,6 @@
         echo implode(' ', $word_found) . '<br>';
         if (!in_array('_', $word_found, true)) {
             echo "Bravo, tu as trouvé le mot !";
-            // Ajouter point ici
         }
         if ($_SESSION['tries_remaining'] == 0){
             echo "Vous avez perdu !";
@@ -113,9 +119,15 @@
         foreach($_SESSION['tries'] as $letter => $couleur){
             echo '<span class="letter_' . ($couleur ?? 'black') . '">' . htmlspecialchars($letter, ENT_QUOTES, 'UTF-8') . ' </span>';
         }
+        if(isset($_SESSION['victory'])){
+            echo count($_SESSION['tries']);
+            export_bdd($dbh, $_SESSION['userId'], $_SESSION['wordId'], $_SESSION['difficulty'], count($_SESSION['tries']), $_SESSION['victory'], $_SESSION['wordPoint']);
+        }else{
+            end_game($_SESSION['tries_remaining']);
+        }
         ?>
             <form method="POST">
-                <?php if ($_SESSION['tries_remaining'] > 0): ?>
+                <?php if (!isset($_SESSION['victory'])): ?>
                     <input type="text" placeholder="pamplemousse" name="word_test">
                     <button name="word_button">Tester le mot</button><br>
 

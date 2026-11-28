@@ -1,4 +1,15 @@
 <?php
+
+function interrogation_bdd($dbh, $select, $table, $where, $arg){
+    try{
+        $query = $dbh->prepare("SELECT $select FROM $table WHERE $where = ?");
+        $query->execute([$arg]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }catch (PDOException $e) {
+    die("Erreur lors de la récupération des données : " . $e->getMessage());
+    }
+}
+
 function init($dbh){
     if (!isset($_SESSION['difficulty'])){
         $_SESSION['difficulty'] = 'Medium';
@@ -33,6 +44,9 @@ function new_game($words, $reveal_letter){
         $_SESSION['alphabet'] = array_fill_keys(range('a', 'z'), null);
         $_SESSION['tries'] = [];
         $_SESSION['tries_remaining'] = 7;
+        $_SESSION['victory'] = null;
+        $_SESSION['wordId'] = null;
+        $_SESSION['wordPoint'] = null;
 
         // On révèle ou non des lettres
         
@@ -47,6 +61,31 @@ function new_game($words, $reveal_letter){
         }
     }
 }
+
+function end_game($tries){
+    if($tries <= 0){
+        $_SESSION['victory'] = 0;
+        $_SESSION['wordPoint'] = -5;
+    }
+}
+
+function export_bdd($dbh, $user_id, $word_id, $difficulty, $attemps, $victory, $points){
+    try{
+        $query = $dbh->prepare("INSERT INTO games(user_id, word_id, difficulty, attempts, victory, points, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+        $query->execute([
+            $user_id,
+            $word_id,
+            $difficulty,
+            $attemps,
+            $victory,
+            $points
+        ]);
+    }catch (PDOException $e) {
+    die("Erreur lors de l'exportation des données : " . $e->getMessage());
+    }
+
+}
+
 
 
 ?>
